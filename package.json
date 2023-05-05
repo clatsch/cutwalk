@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Cost Calculator for Cutting Machines",
   "main": "app.js",
+  "type": "module",
   "scripts": {
     "test_CI": "mocha ./tests/testMocha.js mocha --timeout 10000 --exit",
     "test_selenium": "mocha ./tests/selenium.mjs",

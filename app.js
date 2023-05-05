@@ -8,12 +8,12 @@ import xss from 'xss-clean';
 import hpp from 'hpp';
 import cookieParser from 'cookie-parser';
 
-import AppError from './utils/appError';
-import globalErrorHandler from './controllers/errorController';
-import shipmentRouter from './routes/shipmentRoutes';
-import userRouter from './routes/userRoutes';
-import viewRouter from './routes/viewRoutes';
-import customerRouter from './routes/customerRoutes';
+import AppError from './utils/appError.js';
+// import globalErrorHandler from './controllers/errorController';
+// import shipmentRouter from './routes/shipmentRoutes';
+import userRouter from './routes/userRoutes.js';
+// import viewRouter from './routes/viewRoutes';
+// import customerRouter from './routes/customerRoutes';
 
 // Start express app
 const app = express();
@@ -27,10 +27,10 @@ app.use(helmet.contentSecurityPolicy({
   },
 }));
 
-app.set('view engine', 'ejs');
-
-// could also be './views', but this is safer
-app.set('views', path.join(__dirname, 'views/pages'));
+// app.set('view engine', 'ejs');
+//
+// // could also be './views', but this is safer
+// app.set('views', path.join(__dirname, 'views/pages'));
 
 // Development logging
 if (process.env.NODE_ENV === 'development') {
@@ -64,7 +64,7 @@ app.use(xss());
 app.use(hpp());
 
 // Serving static files
-app.use(express.static(path.join(__dirname, 'public')));
+// app.use(express.static(path.join(__dirname, 'public')));
 
 // Test middleware
 app.use((req, res, next) => {
@@ -74,15 +74,15 @@ app.use((req, res, next) => {
 });
 
 // ROUTES
-app.use('/', viewRouter);
-app.use('/api/v1/shipments', shipmentRouter);
+// app.use('/', viewRouter);
+// app.use('/api/v1/shipments', shipmentRouter);
 app.use('/api/v1/users', userRouter);
-app.use('/api/v1/customers', customerRouter);
+// app.use('/api/v1/customers', customerRouter);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
-
+/*
 app.use(globalErrorHandler);
-
+*/
 export default app;
