@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const dotenv = require('dotenv');
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 
 process.on('uncaughtException', err => {
   console.log('UNCAUGHT EXCEPTION! Shutting down...');
@@ -8,16 +8,16 @@ process.on('uncaughtException', err => {
 });
 
 dotenv.config({ path: './config.env' });
-const app = require('./app');
+import app from './app.js';
 
 const DB = process.env.DATABASE.replace(
-  '<PASSWORD>',
-  process.env.DATABASE_PASSWORD,
+    '<PASSWORD>',
+    process.env.DATABASE_PASSWORD,
 );
 
 // eslint-disable-next-line no-use-before-define
 dbConnect()
-  .catch(err => console.log(err));
+    .catch(err => console.log(err));
 
 async function dbConnect () {
   mongoose.set('strictQuery', false);

@@ -1,35 +1,31 @@
-const path = require('path');
-const express = require('express');
-const morgan = require('morgan');
-const rateLimit = require('express-rate-limit');
-const helmet = require('helmet');
-const mongoSanitize = require('express-mongo-sanitize');
-const xss = require('xss-clean');
-const hpp = require('hpp');
-const cookieParser = require('cookie-parser');
+import path from 'path';
+import express from 'express';
+import morgan from 'morgan';
+import rateLimit from 'express-rate-limit';
+import helmet from 'helmet';
+import mongoSanitize from 'express-mongo-sanitize';
+import xss from 'xss-clean';
+import hpp from 'hpp';
+import cookieParser from 'cookie-parser';
 
-const AppError = require('./utils/appError');
-const globalErrorHandler = require('./controllers/errorController');
-const shipmentRouter = require('./routes/shipmentRoutes');
-const userRouter = require('./routes/userRoutes');
-const viewRouter = require('./routes/viewRoutes');
-const customerRouter = require('./routes/customerRoutes');
+import AppError from './utils/appError';
+import globalErrorHandler from './controllers/errorController';
+import shipmentRouter from './routes/shipmentRoutes';
+import userRouter from './routes/userRoutes';
+import viewRouter from './routes/viewRoutes';
+import customerRouter from './routes/customerRoutes';
 
 // Start express app
 const app = express();
 
 // GLOBAL MIDDLEWARES
 // Set security HTTP headers
-
-
 app.use(helmet.contentSecurityPolicy({
   directives: {
     defaultSrc: ['\'self\''],
     scriptSrc: ['\'self\'', 'cdnjs.cloudflare.com', 'code.jquery.com', 'cdn.datatables.net'],
-      },
-}))
-;
-
+  },
+}));
 
 app.set('view engine', 'ejs');
 
@@ -89,4 +85,4 @@ app.all('*', (req, res, next) => {
 
 app.use(globalErrorHandler);
 
-module.exports = app;
+export default app;
