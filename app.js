@@ -12,6 +12,7 @@ import AppError from './utils/appError.js';
 // import globalErrorHandler from './controllers/errorController';
 // import shipmentRouter from './routes/shipmentRoutes';
 import userRouter from './routes/userRoutes.js';
+import fileRouter from './routes/fileRoutes.js';
 // import viewRouter from './routes/viewRoutes';
 // import customerRouter from './routes/customerRoutes';
 
@@ -64,7 +65,8 @@ app.use(xss());
 app.use(hpp());
 
 // Serving static files
-// app.use(express.static(path.join(__dirname, 'public')));
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Test middleware
 app.use((req, res, next) => {
@@ -77,6 +79,7 @@ app.use((req, res, next) => {
 // app.use('/', viewRouter);
 // app.use('/api/v1/shipments', shipmentRouter);
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/files', fileRouter);
 // app.use('/api/v1/customers', customerRouter);
 
 app.all('*', (req, res, next) => {
