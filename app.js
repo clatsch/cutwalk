@@ -78,8 +78,8 @@ app.use((req, res, next) => {
 // ROUTES
 // app.use('/', viewRouter);
 // app.use('/api/v1/shipments', shipmentRouter);
-app.use('/api/v1/users', userRouter);
 app.use('/api/v1/files', fileRouter);
+app.use('/api/v1/users', userRouter);
 // app.use('/api/v1/customers', customerRouter);
 
 app.all('*', (req, res, next) => {
