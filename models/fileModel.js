@@ -17,6 +17,16 @@ const fileModel = new mongoose.Schema({
         type: Number,
         default: 0,
     },
+    boundingBox: {
+        width: {
+            type: Number,
+            default: 0,
+        },
+        height: {
+            type: Number,
+            default: 0,
+        },
+    },
     userId: {
         type: mongoose.Schema.ObjectId,
         ref: 'User',

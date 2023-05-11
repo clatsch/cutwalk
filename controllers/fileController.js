@@ -60,19 +60,20 @@ FileController.uploadFile = (req, res, next) => {
 
             // Parse the DXF file to get the total length and contour count
             const parsedDxf = await parseDxfFile(absolutePath);
-            const totalLength = parsedDxf ? parsedDxf.totalLength : 0;
-            const contourCount = parsedDxf ? parsedDxf.contourCount : 0;
+            if (parsedDxf) {
+                const {totalLength, contourCount, boundingBox} = parsedDxf;
 
-            // Update the values in the File object
-            newFile.set({
-                totalLength: totalLength,
-                contourCount: contourCount,
-            });
+                // Update the values in the File object
+                newFile.set({
+                    totalLength: totalLength,
+                    contourCount: contourCount,
+                    boundingBox: boundingBox,
+                });
 
-            // Save the updated File object to the database
-            await newFile.save();
-            next()
-
+                // Save the updated File object to the database
+                await newFile.save();
+                next()
+            }
         } catch (err) {
             return next(err);
         }
