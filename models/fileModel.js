@@ -9,6 +9,14 @@ const fileModel = new mongoose.Schema({
         type: String,
         required: true,
     },
+    totalLength: {
+        type: Number,
+        default: 0,
+    },
+    contourCount: {
+        type: Number,
+        default: 0,
+    },
     userId: {
         type: mongoose.Schema.ObjectId,
         ref: 'User',

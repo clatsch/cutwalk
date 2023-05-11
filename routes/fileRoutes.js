@@ -11,7 +11,9 @@ router.use(authController.protect);
 router.get('/upload', FileController.getUploadForm);
 
 // Route for handling file uploads
-router.post('/upload', FileController.uploadFile);
+router.post('/upload',
+    FileController.uploadFile,
+    FileController.parseDxf);
 
 // Route for rendering the list of uploaded files
 router.get('/', FileController.getFileList);
