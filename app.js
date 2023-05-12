@@ -7,12 +7,16 @@ import mongoSanitize from 'express-mongo-sanitize';
 import xss from 'xss-clean';
 import hpp from 'hpp';
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
 
 import AppError from './utils/appError.js';
 // import globalErrorHandler from './controllers/errorController';
 // import shipmentRouter from './routes/shipmentRoutes';
 import userRouter from './routes/userRoutes.js';
 import fileRouter from './routes/fileRoutes.js';
+import materialRouter from './routes/materialRoutes.js';
+import priceRouter from './routes/priceRoutes.js';
+import jobRouter from './routes/jobRoutes.js';
 // import viewRouter from './routes/viewRoutes';
 // import customerRouter from './routes/customerRoutes';
 
@@ -76,10 +80,14 @@ app.use((req, res, next) => {
 });
 
 // ROUTES
+app.use(cors());
 // app.use('/', viewRouter);
 // app.use('/api/v1/shipments', shipmentRouter);
 app.use('/api/v1/files', fileRouter);
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/jobs', jobRouter);
+app.use('/api/v1/materials', materialRouter);
+app.use('/api/v1/calculate-price', priceRouter);
 // app.use('/api/v1/customers', customerRouter);
 
 app.all('*', (req, res, next) => {

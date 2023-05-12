@@ -22,13 +22,11 @@ router.delete('/deleteMe', userController.deleteMe);
 // This middleware will restrict all the routes that come after this point
 router.use(authController.restrictsTo('admin'));
 
-router
-    .route('/')
+router.route('/')
     .get(userController.getAllUsers)
     .post(userController.createUser);
 
-router
-    .route('/:id')
+router.route('/:id')
     .get(userController.getUser)
     .patch(userController.updateUser)
     .delete(userController.deleteUser);

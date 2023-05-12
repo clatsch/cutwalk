@@ -1,5 +1,5 @@
 import express from 'express';
-import FileController from '../controllers/fileController.js';
+import priceController from '../controllers/priceController.js';
 import * as authController from '../controllers/authController.js';
 
 const router = express.Router();
@@ -7,10 +7,10 @@ const router = express.Router();
 // This middleware will protect all the routes that come after this point
 router.use(authController.protect);
 
-router.get('/', FileController.getFileList);
+// Route for handling materials
+router.route('/')
+    .post(priceController.calculatePrice);
 
-router.route('/upload')
-    .get(FileController.getUploadForm)
-    .post(FileController.uploadFile, FileController.parseDxf);
+// Route for rendering the list of uploaded files
 
 export default router;
