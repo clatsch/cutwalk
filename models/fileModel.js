@@ -30,7 +30,7 @@ const fileModel = new mongoose.Schema({
     userId: {
         type: mongoose.Schema.ObjectId,
         ref: 'User',
-        required: [true, 'Upload must belong to a user'],
+        // required: [true, 'Upload must belong to a user'],
     },
 });
 

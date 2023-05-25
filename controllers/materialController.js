@@ -1,6 +1,5 @@
 import Material from '../models/materialModel.js';
 import * as factory from './handlerFactory.js';
-import Job from "../models/jobModel.js";
 
 export const getAllMaterials = factory.getAll(Material);
 export const createMaterial = factory.createOne(Material);

@@ -29,9 +29,7 @@ export const updateOne = Model => catchAsync(async(req, res, next) => {
     res.status(200)
         .json({
             status: 'success',
-            data: {
-                data: doc,
-            },
+            data: doc
         });
 });
 
@@ -41,9 +39,7 @@ export const createOne = Model => catchAsync(async(req, res, next) => {
     res.status(201)
         .json({
             status: 'success',
-            data: {
-                data: doc,
-            },
+            data: doc
         });
 });
 
@@ -59,9 +55,7 @@ export const getOne = (Model, populateOptions) => catchAsync(async(req, res, nex
     res.status(200)
         .json({
             status: 'success',
-            data: {
-                data: doc,
-            },
+            data: doc
         });
 });
 
@@ -83,8 +77,6 @@ export const getAll = Model => catchAsync(async(req, res, next) => {
         .json({
             status: 'success',
             results: doc.length,
-            data: {
-                data: doc,
-            },
+            data: doc
         });
 });

@@ -15,6 +15,8 @@ import AppError from './utils/appError.js';
 import userRouter from './routes/userRoutes.js';
 import fileRouter from './routes/fileRoutes.js';
 import materialRouter from './routes/materialRoutes.js';
+import machineRouter from './routes/machineRoutes.js';
+import cutOptionsRouter from './routes/cutOptionsRoutes.js';
 import priceRouter from './routes/priceRoutes.js';
 import jobRouter from './routes/jobRoutes.js';
 // import viewRouter from './routes/viewRoutes';
@@ -25,6 +27,7 @@ const app = express();
 
 // GLOBAL MIDDLEWARES
 // Set security HTTP headers
+
 app.use(helmet.contentSecurityPolicy({
   directives: {
     defaultSrc: ['\'self\''],
@@ -37,6 +40,11 @@ app.use(helmet.contentSecurityPolicy({
 // // could also be './views', but this is safer
 // app.set('views', path.join(__dirname, 'views/pages'));
 
+// app.use(cors({
+//   origin: 'http://127.0.0.1:3001',
+//   credentials: true,
+// }));
+
 // Development logging
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
@@ -44,7 +52,7 @@ if (process.env.NODE_ENV === 'development') {
 
 // Limit requests from same IP
 const limiter = rateLimit({
-  max: 100,
+  max: 1000000, //ToDO set to 100
   windowMs: 60 * 60 * 1000,
   message: 'Too many requests from this IP, please try again in an hour!',
 });
@@ -80,13 +88,28 @@ app.use((req, res, next) => {
 });
 
 // ROUTES
-app.use(cors());
+
+app.use(cors({
+  origin: 'http://localhost:8080',
+  credentials: true
+}));
+
+// app.use((req, res, next) => {
+//   res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:3001');
+//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
+//   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+//   res.setHeader('Access-Control-Allow-Credentials', 'true');
+//   next();
+// });
+
 // app.use('/', viewRouter);
 // app.use('/api/v1/shipments', shipmentRouter);
 app.use('/api/v1/files', fileRouter);
 app.use('/api/v1/users', userRouter);
-app.use('/api/v1/jobs', jobRouter);
+app.use('/api/v1/machines', machineRouter);
 app.use('/api/v1/materials', materialRouter);
+app.use('/api/v1/cutoptions', cutOptionsRouter);
+app.use('/api/v1/jobs', jobRouter);
 app.use('/api/v1/calculate-price', priceRouter);
 // app.use('/api/v1/customers', customerRouter);
 

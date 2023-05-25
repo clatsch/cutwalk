@@ -1,5 +1,5 @@
 import express from 'express';
-import * as materialController from '../controllers/materialController.js';
+import * as machineController from '../controllers/machineController.js';
 import * as authController from '../controllers/authController.js';
 
 const router = express.Router();
@@ -9,12 +9,12 @@ const router = express.Router();
 
 // Route for handling materials
 router.route('/')
-    .post(materialController.createMaterial)
-    .get(materialController.getAllMaterials);
+    .post(machineController.createMachine)
+    .get(machineController.getAllMachines);
 
 // Route for updating a material
 router.route('/:id')
-    .patch(materialController.updateMaterial);
+    .patch(machineController.updateMachine);
 
 
 // Route for rendering the list of uploaded files

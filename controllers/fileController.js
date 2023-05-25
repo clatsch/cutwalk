@@ -19,11 +19,13 @@ const multerStorage = multer.diskStorage({
 });
 
 const uploadFilter = (req, file, cb) => {
-    if (file.mimetype === 'image/vnd.dxf') {
-        cb(null, true);
-    } else {
-        cb(new AppError('Not a DXF file! Please upload only DXF Files'), false);
-    }
+    console.log(file.mimetype);
+    cb(null, true);
+    // if (file.mimetype === 'image/vnd.dxf') {
+    //     cb(null, true);
+    // } else {
+    //     cb(new AppError('Not a DXF file! Please upload only DXF Files'), false);
+    // }
 }
 
 const upload = multer({
@@ -48,7 +50,7 @@ FileController.uploadFile = (req, res, next) => {
         const newFile = new File({
             filename: req.file.filename,
             filepath: req.file.path,
-            userId: req.user._id,
+            // userId: req.user._id,
         });
 
         try {
@@ -72,6 +74,19 @@ FileController.uploadFile = (req, res, next) => {
 
                 // Save the updated File object to the database
                 await newFile.save();
+
+                // Include the id field in the response
+                const responseData = {
+                    id: newFile._id, // Assuming the MongoDB document's id field is '_id'
+                    filename: newFile.filename,
+                    filepath: newFile.filepath,
+                    totalLength: newFile.totalLength,
+                    contourCount: newFile.contourCount,
+                    boundingBox: newFile.boundingBox,
+                };
+
+                res.json(responseData);
+
                 next()
             }
         } catch (err) {

@@ -1,5 +1,5 @@
 import express from 'express';
-import * as materialController from '../controllers/materialController.js';
+import * as cutOptionsController from '../controllers/cutOptionsController.js';
 import * as authController from '../controllers/authController.js';
 
 const router = express.Router();
@@ -9,12 +9,12 @@ const router = express.Router();
 
 // Route for handling materials
 router.route('/')
-    .post(materialController.createMaterial)
-    .get(materialController.getAllMaterials);
+    .post(cutOptionsController.createCutOption)
+    .get(cutOptionsController.getAllCutOptions);
 
 // Route for updating a material
 router.route('/:id')
-    .patch(materialController.updateMaterial);
+    .patch(cutOptionsController.updateCutOption);
 
 
 // Route for rendering the list of uploaded files
