@@ -5,7 +5,9 @@ import * as authController from '../controllers/authController.js';
 const router = express.Router();
 
 // This middleware will protect all the routes that come after this point
-// router.use(authController.protect);
+router.use(authController.protect);
+// This middleware will restrict all the routes that come after this point
+router.use(authController.restrictsTo('admin'));
 
 // Route for handling materials
 router.route('/')

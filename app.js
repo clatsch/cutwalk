@@ -31,19 +31,10 @@ const app = express();
 app.use(helmet.contentSecurityPolicy({
   directives: {
     defaultSrc: ['\'self\''],
-    scriptSrc: ['\'self\'', 'cdnjs.cloudflare.com', 'code.jquery.com', 'cdn.datatables.net'],
+    scriptSrc: ['\'self\'', "'unsafe-inline'", "'unsafe-eval'", 'cdnjs.cloudflare.com', 'code.jquery.com', 'cdn.datatables.net'],
   },
 }));
 
-// app.set('view engine', 'ejs');
-//
-// // could also be './views', but this is safer
-// app.set('views', path.join(__dirname, 'views/pages'));
-
-// app.use(cors({
-//   origin: 'http://127.0.0.1:3001',
-//   credentials: true,
-// }));
 
 // Development logging
 if (process.env.NODE_ENV === 'development') {
@@ -91,11 +82,13 @@ app.use((req, res, next) => {
 
 app.use(cors({
   origin: 'http://localhost:8080',
-  credentials: true
+  credentials: true,
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 // app.use((req, res, next) => {
-//   res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:3001');
+//   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
 //   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
 //   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 //   res.setHeader('Access-Control-Allow-Credentials', 'true');

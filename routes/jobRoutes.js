@@ -7,7 +7,6 @@ const router = express.Router();
 // This middleware will protect all the routes that come after this point
 router.use(authController.protect);
 
-// Route for rendering the file upload form
 router.route('/')
     .get(jobController.getAllJobs)
     .post(jobController.createJob);

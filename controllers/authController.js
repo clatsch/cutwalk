@@ -19,7 +19,7 @@ const createSendToken = (user, statusCode, res) => {
         secure: true,
     };
     if (process.env.NODE_ENV !== 'production') {
-        cookieOptions.secure = false; // Set secure to false for non-production environments
+        cookieOptions.secure = true; // Set secure to false for non-production environments
     }
     res.cookie('jwt', token, cookieOptions);
 
@@ -71,6 +71,8 @@ export const logout = (req, res) => {
     res.cookie('jwt', 'loggedout', {
         expires: new Date(Date.now() + 10 * 1000),
         httpOnly: true,
+        sameSite: 'none',
+        secure: true,
     });
     res.status(200)
         .json({status: 'success'});
