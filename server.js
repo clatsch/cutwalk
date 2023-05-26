@@ -1,7 +1,13 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import https from 'https';
+import fs from 'fs';
 
-process.on('uncaughtException', err => {
+const privateKey = fs.readFileSync('./certificates/server.key', 'utf8');
+const certificate = fs.readFileSync('./certificates/server.cert', 'utf8');
+const credentials = { key: privateKey, cert: certificate };
+
+process.on('uncaughtException', (err) => {
   console.log('UNCAUGHT EXCEPTION! Shutting down...');
   console.log(err.name, err.message);
   process.exit(1);
@@ -10,25 +16,41 @@ process.on('uncaughtException', err => {
 dotenv.config({ path: './config.env' });
 import app from './app.js';
 
-const DB = process.env.DATABASE.replace(
-    '<PASSWORD>',
-    process.env.DATABASE_PASSWORD,
-);
+const DB = process.env.DATABASE.replace('<PASSWORD>', process.env.DATABASE_PASSWORD);
 
-// eslint-disable-next-line no-use-before-define
-dbConnect()
-    .catch(err => console.log(err));
+dbConnect().catch((err) => {
+  console.log(err);
+  process.exit(1);
+});
 
-async function dbConnect () {
+async function dbConnect() {
   mongoose.set('strictQuery', false);
-  await mongoose.connect(DB);
+  await mongoose.connect(DB, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
+  });
   console.log('DB connection successful!');
 }
 
 const port = process.env.PORT || 3000;
-const server = app.listen(port, () => {
-  console.log(`App running on port ${port}...`);
+const server = https.createServer(credentials, app);
+const listener = server.listen(port, () => {
+  console.log(`App running on port ${listener.address().port}...`);
 });
 
-// ToDo
-// catch unhandled rejections and bad auth to DB
+process.on('unhandledRejection', (err) => {
+  console.log('UNHANDLED REJECTION! Shutting down...');
+  console.log(err.name, err.message);
+  server.close(() => {
+    process.exit(1);
+  });
+});
+
+process.on('SIGTERM', () => {
+  console.log('SIGTERM RECEIVED. Shutting down gracefully...');
+  server.close(() => {
+    console.log('Process terminated!');
+  });
+});
