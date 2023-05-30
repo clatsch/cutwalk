@@ -110,19 +110,22 @@ export const isLoggedIn = async (req, res, next) => {
     if (req.cookies.jwt) {
         try {
             const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
-
             const currentUser = await User.findById(decoded.id);
             if (!currentUser) {
+                res.json({ isLoggedIn: false, role: null });
                 return next();
             }
 
             if (currentUser.changedPasswordAfter(decoded.iat)) {
+                res.json({ isLoggedIn: false, role: null });
                 return next();
             }
 
             res.locals.user = currentUser;
+            res.json({ isLoggedIn: true, role: currentUser.role });
             return next();
         } catch (err) {
+            res.json({ isLoggedIn: false, role: null });
             return next();
         }
     }

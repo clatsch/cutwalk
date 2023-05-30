@@ -23,10 +23,12 @@ const jobModel = new mongoose.Schema({
     totalLength: {
         type: Number
     },
+    contourCount: {
+        type: Number
+    },
     price: {
         type: Number
     },
-
     quality: {
         type: String
     },
@@ -40,13 +42,17 @@ const jobModel = new mongoose.Schema({
         ref: 'User',
         //required: [true, 'Job must belong to a user'],
     },
+    date: {
+        type: Date,
+        default: Date.now
+    },
     tags: [String]
 });
 
 jobModel.pre(/^find/, function (next) {
     this.populate({
         path: 'machineId',
-        select: '-_id name',
+        select: '-_id name type',
     }).populate({
         path: 'materialId',
         select: '-_id name',

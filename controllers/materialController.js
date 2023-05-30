@@ -1,7 +1,10 @@
 import Material from '../models/materialModel.js';
 import * as factory from './handlerFactory.js';
+import Machine from "../models/machineModel.js";
 
 export const getAllMaterials = factory.getAll(Material);
+
+export const getMaterial = factory.getOne(Material);
 export const createMaterial = factory.createOne(Material);
 export const updateMaterial = factory.updateOne(Material);
 

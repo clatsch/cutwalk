@@ -8,14 +8,17 @@ const router = express.Router();
 router.use(authController.protect);
 
 router.route('/')
-    .post(machineController.createMachine)
     .get(machineController.getAllMachines);
 
 router.route('/:id')
     .get(machineController.getMachine)
+
+
+router.use(authController.restrictsTo('admin'));
+router.route('/')
+    .post(machineController.createMachine)
+
+router.route('/:id')
     .patch(machineController.updateMachine);
-
-
-// Route for rendering the list of uploaded files
 
 export default router;

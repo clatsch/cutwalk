@@ -16,6 +16,7 @@ router.route('/')
 
 // Route for updating a material
 router.route('/:id')
+    .get(materialController.getMaterial)
     .patch(materialController.updateMaterial);
 
 
