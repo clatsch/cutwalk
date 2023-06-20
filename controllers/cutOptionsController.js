@@ -9,4 +9,6 @@ export const getAllCutOptions = factory.getAll(CutOption);
 
 router.use(authController.restrictsTo('admin'));
 export const createCutOption = factory.createOne(CutOption);
+export const getCutOption = factory.getOne(CutOption);
 export const updateCutOption = factory.updateOne(CutOption);
+export const deleteCutOption = factory.deleteOne(CutOption);

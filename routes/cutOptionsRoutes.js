@@ -14,7 +14,9 @@ router.route('/')
 
 // Route for updating a material
 router.route('/:id')
-    .patch(cutOptionsController.updateCutOption);
+    .get(cutOptionsController.getCutOption)
+    .patch(cutOptionsController.updateCutOption)
+    .delete(cutOptionsController.deleteCutOption);
 
 
 // Route for rendering the list of uploaded files

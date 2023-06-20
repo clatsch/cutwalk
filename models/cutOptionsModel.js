@@ -32,6 +32,10 @@ const cutOptionsSchema = new mongoose.Schema({
         finePhoto: {type: String, default: ''},
         xFine: {type: Number, default: 0},
         xFinePhoto: {type: String, default: ''},
+    },
+    updated: {
+        type: Date,
+        default: Date.now(),
     }
 });
 
