@@ -15,8 +15,8 @@ const cutOptionsSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    abrasiveFlow: {type: Number, default: 0},
-    pressure: {type: Number, default: 0},
+    abrasiveFlow: {type: Number, default: 450},
+    pressure: {type: Number, default: 3600},
     piercing: {
         type: Number,
         default: 10,

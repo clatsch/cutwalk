@@ -20,7 +20,8 @@ router.route('/')
 // Route for updating a material
 router.route('/:id')
     .get(materialController.getMaterial)
-    .patch(materialController.updateMaterial);
+    .patch(materialController.updateMaterial)
+    .delete(materialController.deleteMaterial)
 
 
 // Route for rendering the list of uploaded files

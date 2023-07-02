@@ -19,6 +19,7 @@ router.route('/')
     .post(machineController.createMachine)
 
 router.route('/:id')
-    .patch(machineController.updateMachine);
+    .patch(machineController.updateMachine)
+    .delete(machineController.deleteMachine)
 
 export default router;

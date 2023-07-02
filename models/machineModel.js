@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import {number} from "sharp/lib/is.js";
 
 const machineSchema = new mongoose.Schema({
     name: {
@@ -22,6 +21,14 @@ const machineSchema = new mongoose.Schema({
     maxHeight: {
         type: Number,
         required: true
+    },
+    rate: {
+        type: Number,
+        default: 120,
+    },
+    updated: {
+        type: Date,
+        default: Date.now(),
     }
 });
 
