@@ -119,7 +119,8 @@ const parseDxfFile = async (filePath) => {
             // Calculate bounding-box
             for (const entity of parsedDxf.entities) {
                 if (entity.type === 'CIRCLE') {
-                    const {x, y, radius} = entity;
+                    const {x, y} = entity.center
+                    const {radius} = entity;
                     if (!isNaN(x) && !isNaN(y) && !isNaN(radius)) {
                         updateBoundingBox(x - radius, y - radius, x + radius, y + radius);
                     }
@@ -147,26 +148,46 @@ const parseDxfFile = async (filePath) => {
                             updateBoundingBox(x, y, x, y);
                         }
                     }
+
                 } else if (entity.type === 'ARC') {
-                    const {x, y, radius, startAngle, endAngle} = entity;
+                    const {x, y} = entity.center;
+                    const {radius} = entity;
+                    const {startAngle, endAngle} = entity;
                     if (!isNaN(x) && !isNaN(y) && !isNaN(radius) && !isNaN(startAngle) && !isNaN(endAngle)) {
-                        const startAngleRad = (startAngle * Math.PI) / 180;
-                        const endAngleRad = (endAngle * Math.PI) / 180;
-                        const startPoint = {
-                            x: x + radius * Math.cos(startAngleRad),
-                            y: y + radius * Math.sin(startAngleRad),
-                        };
-                        const endPoint = {
-                            x: x + radius * Math.cos(endAngleRad),
-                            y: y + radius * Math.sin(endAngleRad),
-                        };
-                        updateBoundingBox(x - radius, y - radius, x + radius, y + radius);
-                        if (!isNaN(startPoint.x) && !isNaN(startPoint.y)) {
-                            updateBoundingBox(startPoint.x, startPoint.y, startPoint.x, startPoint.y);
+
+                        // Normalize angles to [0, 2π)
+                        let startAngleRad = startAngle % (2 * Math.PI);
+                        let endAngleRad = endAngle % (2 * Math.PI);
+                        if (startAngleRad < 0) startAngleRad += 2 * Math.PI;
+                        if (endAngleRad < 0) endAngleRad += 2 * Math.PI;
+
+                        // Swap if start angle is bigger than end angle
+                        if (startAngleRad > endAngleRad) {
+                            let temp = startAngleRad;
+                            startAngleRad = endAngleRad;
+                            endAngleRad = temp;
                         }
-                        if (!isNaN(endPoint.x) && !isNaN(endPoint.y)) {
-                            updateBoundingBox(endPoint.x, endPoint.y, endPoint.x, endPoint.y);
+
+                        // Initial bounding box using start and end points
+                        let minX = Math.min(x + radius * Math.cos(startAngleRad), x + radius * Math.cos(endAngleRad));
+                        let maxX = Math.max(x + radius * Math.cos(startAngleRad), x + radius * Math.cos(endAngleRad));
+                        let minY = Math.min(y + radius * Math.sin(startAngleRad), y + radius * Math.sin(endAngleRad));
+                        let maxY = Math.max(y + radius * Math.sin(startAngleRad), y + radius * Math.sin(endAngleRad));
+
+                        // List extreme points: Right(0), Up(π/2), Left(π), Down(3π/2)
+                        let extremePoints = [0, Math.PI / 2, Math.PI, 3 * Math.PI / 2];
+
+                        for (let point of extremePoints) {
+                            // If point is inside the angle range
+                            if (startAngleRad <= point && point <= endAngleRad) {
+                                minX = Math.min(minX, x + radius * Math.cos(point));
+                                maxX = Math.max(maxX, x + radius * Math.cos(point));
+                                minY = Math.min(minY, y + radius * Math.sin(point));
+                                maxY = Math.max(maxY, y + radius * Math.sin(point));
+                            }
                         }
+
+                        updateBoundingBox(minX, minY, maxX, maxY);
                     }
                 } else if (entity.type === 'ELLIPSE') {
                     const {center, majorAxisEndPoint, ratio, startAngle, endAngle} = entity;
@@ -212,7 +233,7 @@ const parseDxfFile = async (filePath) => {
                 };
             }
 
-            console.log(parsedDxf)
+            console.log(parsedDxf.entities[0])
 
             return {
                 totalLength: totalLength,
