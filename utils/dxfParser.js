@@ -186,11 +186,11 @@ const parseDxfFile = async (filePath) => {
                         const radiusY = Math.abs(b);
                         const rotation = Math.atan2(b, a);
 
-// Convert angles to radians
+                        // Convert angles to radians
                         const startAngleRad = (startAngle * Math.PI) / 180;
                         const endAngleRad = (endAngle * Math.PI) / 180;
 
-// Calculate the start and end points on the ellipse
+                        // Calculate the start and end points on the ellipse
                         const startPoint = {
                             x: center.x + radiusX * Math.cos(rotation) * Math.cos(startAngleRad) - radiusY * Math.sin(rotation) * Math.sin(startAngleRad),
                             y: center.y + radiusY * Math.sin(rotation) * Math.cos(startAngleRad) + radiusX * Math.cos(rotation) * Math.sin(startAngleRad),
@@ -200,7 +200,7 @@ const parseDxfFile = async (filePath) => {
                             y: center.y + radiusY * Math.sin(rotation) * Math.cos(endAngleRad) + radiusX * Math.cos(rotation) * Math.sin(endAngleRad),
                         };
 
-// Update the bounding box coordinates
+                        // Update the bounding box coordinates
                         updateBoundingBox(center.x - radiusX, center.y - radiusY, center.x + radiusX, center.y + radiusY);
                         updateBoundingBox(startPoint.x, startPoint.y, startPoint.x, startPoint.y);
                         updateBoundingBox(endPoint.x, endPoint.y, endPoint.x, endPoint.y);
@@ -211,6 +211,8 @@ const parseDxfFile = async (filePath) => {
                     height: maxY !== -Infinity && minY !== Infinity ? maxY - minY : 0,
                 };
             }
+
+            console.log(parsedDxf)
 
             return {
                 totalLength: totalLength,
