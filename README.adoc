@@ -1,0 +1,63 @@
+= CutWalk - Backend
+
+This repository contains the backend code for CutWalk, an application for efficient calculation and ordering of waterjet cutting jobs.
+
+== Technologies Used
+* Node.js
+* Express.js
+* MongoDB
+* JWT (JSON Web Tokens)
+
+== Installation
+
+. Make sure you have Git and Node.js installed on your computer.
+. Open a command line interface (e.g., Terminal) and navigate to the directory where the repository should be saved.
+. Clone the frontend repository by running the following command::
+
+----
+git clone https://github.com/clatsch/cutwalk
+----
+
+[start=4]
+. Navigate into the cloned repository:
+
+----
+cd cutwalk
+----
+
+[start=5]
+. Install the required npm packages by running the following command within the repository:
+
+----
+npm install
+----
+
+[start=6]
+. Create a file named config.env in the root directory of the project and add the following content:
+
+----
+NODE_ENV=development
+PORT=3000
+DATABASE=Your MongoDB connection
+DATABASE_PASSWORD=Your MongoDB connection password
+
+JWT_SECRET=your secret token
+JWT_EXPIRES_IN=90d
+JWT_COOKIE_EXPIRES_IN=90`
+----
+
+
+[start=6]
+. Start the project by running the following command:
+
+----
+npm run dev
+----
+
+The server should now start on http://localhost:3000.
+
+For the frontend code, please refer to the https://github.com/clatsch/CutWalkFrontend[CutWalk Frontend Repository].
+
+
+
+
